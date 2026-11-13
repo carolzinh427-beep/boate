@@ -11,7 +11,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    // Verifica se o usuário prefere redução de movimento
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     if (mediaQuery.matches) {
       setPrefersReducedMotion(true)
@@ -43,80 +42,84 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
   return (
     <section
-      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#160f0c]"
-      aria-label="Apresentação inicial Âmbar Bar"
+      className="pt-24 sm:pt-32 md:pt-36 pb-12 sm:pb-16 bg-[#160f0c] border-b border-[#542A30]/40"
+      aria-label="Apresentação do Âmbar Bar"
     >
-      {/* Mídia de fundo: vídeo com fallback para fotografia estática */}
-      {!prefersReducedMotion ? (
-        <video
-          ref={videoRef}
-          src="/videos/hero-cocktail.mp4"
-          poster="/images/bar/hero-fallback.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          onLoadedData={() => setVideoLoaded(true)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            videoLoaded ? 'opacity-40' : 'opacity-0'
-          }`}
-          aria-hidden="true"
-        />
-      ) : null}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Conteúdo textual objetivo */}
+          <div className="lg:col-span-7 space-y-6">
+            <h1 className="font-serif text-[32px] sm:text-4xl md:text-5xl lg:text-6xl text-[#F2E8D8] font-normal leading-[1.15] tracking-tight">
+              Bons drinks, música por perto e tempo para ficar
+            </h1>
 
-      {/* Fotografia estática como alternativa ou fallback */}
-      <div
-        className={`absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-700 ${
-          prefersReducedMotion || !videoLoaded ? 'opacity-40' : 'opacity-0 pointer-events-none'
-        }`}
-        style={{ backgroundImage: `url('/images/bar/hero-fallback.jpg')` }}
-        aria-hidden="true"
-      />
+            <p className="text-sm sm:text-base md:text-lg text-[#d5c8b5]/90 font-light leading-relaxed max-w-xl">
+              Conheça o cardápio e escolha a próxima noite para encontrar sua mesa no Âmbar
+            </p>
 
-      {/* Camadas sutis de iluminação quente e escuridão acolhedora */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#211713] via-[#211713]/60 to-[#160f0c]/80 pointer-events-none" />
-      <div className="absolute inset-0 bg-radial from-transparent via-[#211713]/40 to-[#160f0c]/90 pointer-events-none" />
+            <div className="pt-2 flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <button
+                onClick={() => onNavigate('/cardapio')}
+                className="w-full sm:w-auto px-7 py-3.5 bg-[#C48A46] text-[#211713] font-semibold text-xs uppercase tracking-widest rounded-xs hover:bg-[#d89f5e] transition-colors cursor-pointer min-h-[44px] flex items-center justify-center text-center shadow-md shadow-black/30"
+              >
+                Explorar drinks
+              </button>
 
-      {/* Conteúdo central: estritamente título, descrição e duas ações */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 sm:px-8 text-center pt-24 pb-16">
-        <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-[#F2E8D8] font-light tracking-tight leading-[1.08] animate-hero-title">
-          Bons drinks, música por perto e tempo para ficar
-        </h1>
+              <button
+                onClick={() => onNavigate('/programacao')}
+                className="w-full sm:w-auto px-7 py-3.5 border border-[#C48A46]/80 text-[#F2E8D8] font-medium text-xs uppercase tracking-widest rounded-xs hover:bg-[#542A30]/40 hover:border-[#C48A46] transition-colors cursor-pointer min-h-[44px] flex items-center justify-center text-center"
+              >
+                Ver programação
+              </button>
+            </div>
+          </div>
 
-        <p className="mt-8 sm:mt-10 text-base sm:text-xl md:text-2xl text-[#d5c8b5]/90 font-light max-w-2xl mx-auto leading-relaxed animate-hero-desc">
-          Conheça o cardápio e escolha a próxima noite para encontrar sua mesa no Âmbar
-        </p>
+          {/* Mídia proporcional em bloco separado sem competir com o título */}
+          <div className="lg:col-span-5">
+            <div className="relative w-full aspect-[16/10] h-[200px] sm:h-[240px] md:h-[280px] lg:h-[320px] rounded-xs overflow-hidden border border-[#542A30]/60 bg-[#211713]">
+              {!prefersReducedMotion ? (
+                <video
+                  ref={videoRef}
+                  src="/videos/hero-cocktail.mp4"
+                  poster="/images/bar/hero-fallback.jpg"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  onLoadedData={() => setVideoLoaded(true)}
+                  className={`w-full h-full object-cover transition-opacity duration-700 ${
+                    videoLoaded ? 'opacity-90' : 'opacity-0'
+                  }`}
+                  aria-hidden="true"
+                />
+              ) : null}
 
-        <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 animate-hero-actions">
-          <button
-            onClick={() => onNavigate('/cardapio')}
-            className="w-full sm:w-auto px-8 py-4 bg-[#C48A46] text-[#211713] font-semibold text-xs sm:text-sm uppercase tracking-widest rounded-sm hover:bg-[#d89f5e] transition-all transform hover:-translate-y-0.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#F2E8D8] shadow-lg shadow-[#000]/40"
-          >
-            Explorar drinks
-          </button>
+              {/* Fotografia estática como alternativa */}
+              <img
+                src="/images/bar/hero-fallback.jpg"
+                alt="Preparo de drink no balcão do Âmbar Bar"
+                loading="lazy"
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                  prefersReducedMotion || !videoLoaded ? 'opacity-90' : 'opacity-0 pointer-events-none'
+                }`}
+              />
 
-          <button
-            onClick={() => onNavigate('/programacao')}
-            className="w-full sm:w-auto px-8 py-4 border border-[#C48A46]/80 text-[#F2E8D8] font-medium text-xs sm:text-sm uppercase tracking-widest rounded-sm hover:bg-[#542A30]/50 hover:border-[#C48A46] transition-all transform hover:-translate-y-0.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#C48A46] backdrop-blur-sm"
-          >
-            Ver programação
-          </button>
+              {/* Controle textual discreto para pausar */}
+              {!prefersReducedMotion && (
+                <div className="absolute bottom-3 right-3 z-10">
+                  <button
+                    onClick={togglePlay}
+                    className="text-[10px] uppercase tracking-wider text-[#d5c8b5]/80 hover:text-[#C48A46] transition-colors bg-[#160f0c]/90 px-3 py-1.5 rounded-xs border border-[#542A30]/60 cursor-pointer min-h-[44px] flex items-center"
+                    aria-label={isPlaying ? 'Pausar vídeo demonstrativo' : 'Reproduzir vídeo demonstrativo'}
+                  >
+                    {isPlaying ? 'Pausar vídeo' : 'Reproduzir vídeo'}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Controle textual discreto para pausar a animação */}
-      {!prefersReducedMotion && (
-        <div className="absolute bottom-6 right-6 z-20">
-          <button
-            onClick={togglePlay}
-            className="text-[11px] uppercase tracking-widest text-[#d5c8b5]/60 hover:text-[#C48A46] transition-colors bg-[#160f0c]/60 backdrop-blur-xs px-3 py-1.5 rounded-sm border border-[#542A30]/30 cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#C48A46]"
-            aria-label={isPlaying ? 'Pausar vídeo de fundo' : 'Reproduzir vídeo de fundo'}
-          >
-            {isPlaying ? 'Pausar vídeo' : 'Reproduzir vídeo'}
-          </button>
-        </div>
-      )}
     </section>
   )
 }
-
